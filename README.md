@@ -1,19 +1,26 @@
 # catnats
 
-`cat` for [NATS](http://nats.io) gnatsd server. Works for both TLS and non-TLS connections. 
+`cat` for [NATS](http://nats.io) gnatsd server. Works for both TLS and non-TLS connections.
 
 ## Requirements
 
-Python 2.7.6+ or Python 3.4+ is required. Doesn't work with stock Python on OSX. 
+Python 2.7.6+ or Python 3.4+ is required.
+
+Non-TLS connections should work on all platforms. TLS connections requires:
+
+* on Ubuntu 14.04, Python 2.7 and Python 3.4 works out of the box
+* on OSX (El-Capitan) you need to install an updated version of Python with updated OpenSSL
+using `brew install python --with-brewed-openssl`
+* on Windows, Python 3.5 works
 
 ## Usage
 
-`catnats.py gnatsd_host gnatsd_port` 
+`catnats.py gnatsd_host gnatsd_port`
 
 Example:
 
 ```
-$ printf 'connect {}\r\nping\r\n' | ./catnats.py demo.nats.io 4443 
+$ printf 'connect {}\r\nping\r\n' | ./catnats.py demo.nats.io 4443
 ```
 
 Of course, pipes are not needed:
