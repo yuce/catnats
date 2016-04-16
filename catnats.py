@@ -65,6 +65,8 @@ def receiver(sock):
     while 1:
         try:
             data = sock.recv(4096)
+            if not data:
+                os._exit(0)
             print(data.decode('utf-8'), end='')
         except socket.error as e:
             print(e, file=sys.stderr)
