@@ -53,6 +53,14 @@ $ while true; do payload=`cat /proc/loadavg | cut -f 1-3 -d" "` && \
   ./catnats.py --quiet demo.nats.io 4222; sleep 5; done
 ```
 
+The same on OSX
+
+```
+$ while true; do payload=`sysctl -n vm.loadavg | cut -f 2-4 -d" "` && \
+  printf "PUB device-avgload.$(hostname) ${#payload}\r\n${payload}\r\n" | \
+  ./catnats.py --quiet demo.nats.io 4222; sleep 5; done
+```
+
 ## License
 
 ```
