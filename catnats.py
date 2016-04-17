@@ -93,8 +93,16 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('host', help='specify the host')
     parser.add_argument('port', help='specify the port', type=int)
-    parser.add_argument('-q', '--quiet', help='suppress output', action='store_true')
-    parser.add_argument('--pong', help='turns auto-PONG on', action='store_true')
+    parser.add_argument('-q', '--quiet',
+                        help='suppress output',
+                        action='store_true')
+    parser.add_argument('--pong',
+                        help='turns auto-PONG on',
+                        action='store_true')
+    parser.add_argument('--no-exit',
+                        help='do not exit automatically (unless there is an error)',
+                        action='store_true')
+  
     args = parser.parse_args()
 
     try:
@@ -122,8 +130,10 @@ def main():
             line = sys.stdin.readline()
             line = line.rstrip('\r\n').encode('utf-8')
             if not line:
-                break
-            sock.send(line + b'\r\n')
+                if not args.no_exit:
+                    break
+            else:
+                sock.send(line + b'\r\n')
         time.sleep(1)
     except KeyboardInterrupt:
         pass
