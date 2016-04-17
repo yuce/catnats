@@ -15,24 +15,34 @@ using `brew install python --with-brewed-openssl`
 
 ## Usage
 
-`catnats.py [--pong] gnatsd_host gnatsd_port`
+`catnats.py [--quiet] [--pong] gnatsd_host gnatsd_port`
 
-You can enable automatically sending a `PONG` message to gnatsd
-when a `PING` message is received (to keep the connection alive)
-using the `--pong` option.
+### Options:
 
-Example:
+* `-q` or `--quiet`: Suppress output
+* `--ping`: Enable automatically sending a `PONG` message to gnatsd
+when a `PING` message is received (to keep the connection alive).
+
+### Examples
 
 Works with pipes:
 
 ```
-$ printf 'connect {}\r\nping\r\n' | ./catnats.py --pong demo.nats.io 4443
+$ printf 'connect {}\r\nping\r\n' | ./catnats.py -q demo.nats.io 4443
 ```
 
 And without:
 
 ```
 $ ./catnats.py --pong demo.nats.io 4443
+```
+
+Publish time and date every 5 seconds:
+
+```
+$ while true; do time=`date` && \
+  printf "PUB device-time.$(hostname) ${#time}\r\n${time}\r\n" | \
+  catnats --pong --quiet demo.nats.io 4443; sleep 5; done
 ```
 
 ## License

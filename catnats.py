@@ -74,7 +74,7 @@ def can_upgrade_ssl(data):
     return False
 
 
-def receiver(sock, auto_pong=False):
+def receiver(sock, auto_pong=False, quiet=False):
     while 1:
         try:
             data = sock.recv(4096)
@@ -82,7 +82,8 @@ def receiver(sock, auto_pong=False):
                 os._exit(0)
             if auto_pong and has_ping_in(data):
                 send_pong(sock)
-            print(data.decode('utf-8'), end='')
+            if not quiet:
+                print(data.decode('utf-8'), end='')
         except socket.error as e:
             print(e, file=sys.stderr)
             os._exit(0)
@@ -92,6 +93,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('host', help='specify the host')
     parser.add_argument('port', help='specify the port', type=int)
+    parser.add_argument('-q', '--quiet', help='suppress output', action='store_true')
     parser.add_argument('--pong', help='turns auto-PONG on', action='store_true')
     args = parser.parse_args()
 
@@ -106,11 +108,12 @@ def main():
     data = sock.recv(4096)
     if can_upgrade_ssl(data):
         sock = ssl.wrap_socket(sock)
-    print(data.decode('utf-8'), end='')
+    if not args.quiet:
+        print(data.decode('utf-8'), end='')
 
     t = threading.Thread(target=receiver,
                          args=(sock,),
-                         kwargs=dict(auto_pong=args.pong))
+                         kwargs=dict(auto_pong=args.pong, quiet=args.quiet))
     t.setDaemon(True)
     t.start()
 
