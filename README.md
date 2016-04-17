@@ -6,7 +6,7 @@
 
 Python 2.7.6+ or Python 3.4+ is required.
 
-Non-TLS connections should work on all platforms. TLS connections requires:
+Non-TLS connections should work on all platforms. TLS connections require:
 
 * on Ubuntu 14.04, Python 2.7 and Python 3.4 works out of the box
 * on OSX (El-Capitan) you need to install an updated version of Python with updated OpenSSL
