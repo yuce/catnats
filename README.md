@@ -15,18 +15,24 @@ using `brew install python --with-brewed-openssl`
 
 ## Usage
 
-`catnats.py gnatsd_host gnatsd_port`
+`catnats.py [--pong] gnatsd_host gnatsd_port`
+
+You can enable automatically sending a `PONG` message to gnatsd
+when a `PING` message is received (to keep the connection alive)
+using the `--pong` option.
 
 Example:
 
-```
-$ printf 'connect {}\r\nping\r\n' | ./catnats.py demo.nats.io 4443
-```
-
-Of course, pipes are not needed:
+Works with pipes:
 
 ```
-$ ./catnats.py demo.nats.io 4443
+$ printf 'connect {}\r\nping\r\n' | ./catnats.py --pong demo.nats.io 4443
+```
+
+And without:
+
+```
+$ ./catnats.py --pong demo.nats.io 4443
 ```
 
 ## License
