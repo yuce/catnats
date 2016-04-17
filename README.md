@@ -20,7 +20,7 @@ using `brew install python --with-brewed-openssl`
 ### Options:
 
 * `-q` or `--quiet`: Suppress output
-* `--ping`: Enable automatically sending a `PONG` message to gnatsd
+* `--pong`: Enable automatically sending a `PONG` message to gnatsd
 when a `PING` message is received (to keep the connection alive).
 
 ### Examples
