@@ -42,7 +42,15 @@ Publish time and date every 5 seconds:
 ```
 $ while true; do time=`date` && \
   printf "PUB device-time.$(hostname) ${#time}\r\n${time}\r\n" | \
-  catnats --pong --quiet demo.nats.io 4443; sleep 5; done
+  ./catnats.py --quiet demo.nats.io 4443; sleep 5; done
+```
+
+Send load average every 5 seconds (on Linux)
+
+```
+$ while true; do payload=`cat /proc/loadavg | cut -f 1-3 -d" "` && \
+  printf "PUB device-avgload.$(hostname) ${#payload}\r\n${payload}\r\n" | \
+  ./catnats.py --quiet demo.nats.io 4222; sleep 5; done
 ```
 
 ## License
