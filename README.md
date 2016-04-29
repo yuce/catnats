@@ -5,6 +5,10 @@
 
 ## NEWS
 
+* **2015-03-29**: Version 0.1.1:
+
+  * Added `--raw` option.
+
 * **2016-04-29**: Version 0.1.0:
 
   * Changed how the server address is specified. You can now use `--addr host:port`
@@ -32,6 +36,7 @@ using `brew install python --with-brewed-openssl`
 
 * `-addr`: Specify the server address and port in the form of `HOST:PORT` 
 * `-q` or `--quiet`: Suppress output
+* `--raw`: Raw input. Do not process data coming from STDIN
 * `--pong`: Enable automatically sending a `PONG` message to gnatsd
 when a `PING` message is received (to keep the connection alive)
 * `--no-exit`: Do not exit automatically (unless there is an error)

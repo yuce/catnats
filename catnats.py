@@ -83,7 +83,7 @@ def send_pong(sock):
 def can_upgrade_ssl(data):
     nl = data.index(b'\r\n')
     if nl > 0:
-        server_info = parse_info(data[:nl].decode('utf-8'))
+        server_info = parse_info(data[:nl].decode('ascii'))
         return server_info['tls_required']
     return False
 
@@ -97,7 +97,10 @@ def receiver(sock, auto_pong=False, quiet=False):
             if auto_pong and has_ping_in(data):
                 send_pong(sock)
             if not quiet:
-                print(data.decode('utf-8'), end='')
+                try:
+                    print(data.decode('utf-8'), end='')
+                except Exception:
+                    print('[BINARY BLOB]')
         except socket.error as e:
             print(e, file=sys.stderr)
             os._exit(0)
@@ -138,6 +141,9 @@ def main():
     parser.add_argument('-q', '--quiet',
                         help='suppress output',
                         action='store_true')
+    parser.add_argument('--raw',
+                        help='raw input (do not convert the input to text)',
+                        action='store_true')
     parser.add_argument('--pong',
                         help='turns auto-PONG on',
                         action='store_true')
@@ -169,7 +175,10 @@ def main():
     if can_upgrade_ssl(data):
         sock = ssl.wrap_socket(sock)
     if not args.quiet:
-        print(data.decode('ascii'), end='')
+        try:
+            print(data.decode('utf-8'), end='')
+        except UnicodeEncodeError:
+            print('[BINARY BLOB]')
 
     connect_verbose = parse_verbose(args.verbose)
     connect_msg = make_connect_message({'user': args.user,
@@ -186,13 +195,15 @@ def main():
 
     try:
         while 1:
-            line = sys.stdin.readline()
-            line = line.rstrip('\r\n').encode('ascii')
+            if args.raw:            
+                line = sys.stdin.read()
+            else:
+                line = sys.stdin.readline().rstrip('\r\n').encode('utf-8')
             if not line:
                 if not args.no_exit:
                     break
             else:
-                sock.send(line + b'\r\n')
+                sock.send(line if args.raw else line + b'\r\n')
         time.sleep(1)
     except KeyboardInterrupt:
         pass
