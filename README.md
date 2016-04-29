@@ -2,6 +2,17 @@
 
 `cat` for [NATS](http://nats.io) gnatsd server. Works for both TLS and non-TLS connections.
 
+
+## NEWS
+
+* *2016-04-29*: Version 0.1.0:
+
+  * Changed how the server address is specified. You can now use `--addr host:port`
+  * If no adddress is specified, the default `127.0.0.1:4222` is used.
+  * Added the following `CONNECT` message parameters: `--user`, `--pass` and `--verbose`. If any of
+  these parameters is given in the command line, a `CONNECT` message is sent to the server.
+
+
 ## Requirements
 
 Python 2.7.6+ or Python 3.4+ is required.
@@ -15,14 +26,19 @@ using `brew install python --with-brewed-openssl`
 
 ## Usage
 
-`catnats.py [--quiet] [--pong] gnatsd_host gnatsd_port`
+`catnats.py [options]`
 
 ### Options:
 
+* `-addr`: Specify the server address and port in the form of `HOST:PORT` 
 * `-q` or `--quiet`: Suppress output
 * `--pong`: Enable automatically sending a `PONG` message to gnatsd
-when a `PING` message is received (to keep the connection alive).
-
+when a `PING` message is received (to keep the connection alive)
+* `--no-exit`: Do not exit automatically (unless there is an error)
+* `--user USER`: Send a `CONNECT` message with `user` field set to `USER`
+* `--pass PASSWORD`: Send a `CONNECT` message with `pass` field set to `PASSWORD`
+* `--verbose true | false`: Send a `CONNECT` message with `verbose` field set to `VERBOSE`
+ 
 ### Examples
 
 Works with pipes:
