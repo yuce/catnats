@@ -5,7 +5,7 @@
 
 ## NEWS
 
-* *2016-04-29*: Version 0.1.0:
+* **2016-04-29**: Version 0.1.0:
 
   * Changed how the server address is specified. You can now use `--addr host:port`
   * If no adddress is specified, the default `127.0.0.1:4222` is used.
@@ -44,13 +44,13 @@ when a `PING` message is received (to keep the connection alive)
 Works with pipes:
 
 ```
-$ printf 'connect {}\r\nping\r\n' | ./catnats.py -q demo.nats.io 4443
+$ printf 'connect {}\r\nping\r\n' | ./catnats.py -q --addr demo.nats.io:4443
 ```
 
 And without:
 
 ```
-$ ./catnats.py --pong demo.nats.io 4443
+$ ./catnats.py --pong --addr demo.nats.io:4443
 ```
 
 Publish time and date every 5 seconds:
@@ -58,7 +58,7 @@ Publish time and date every 5 seconds:
 ```
 $ while true; do time=`date` && \
   printf "PUB device-time.$(hostname) ${#time}\r\n${time}\r\n" | \
-  ./catnats.py --quiet demo.nats.io 4443; sleep 5; done
+  ./catnats.py --quiet --addr demo.nats.io:4443; sleep 5; done
 ```
 
 Send load average every 5 seconds (on Linux)
@@ -66,7 +66,7 @@ Send load average every 5 seconds (on Linux)
 ```
 $ while true; do payload=`cat /proc/loadavg | cut -f 1-3 -d" "` && \
   printf "PUB device-avgload.$(hostname) ${#payload}\r\n${payload}\r\n" | \
-  ./catnats.py --quiet demo.nats.io 4222; sleep 5; done
+  ./catnats.py --quiet --addr demo.nats.io:4222; sleep 5; done
 ```
 
 The same on OSX
@@ -74,7 +74,7 @@ The same on OSX
 ```
 $ while true; do payload=`sysctl -n vm.loadavg | cut -f 2-4 -d" "` && \
   printf "PUB device-avgload.$(hostname) ${#payload}\r\n${payload}\r\n" | \
-  ./catnats.py --quiet demo.nats.io 4222; sleep 5; done
+  ./catnats.py --quiet --addr demo.nats.io:4222; sleep 5; done
 ```
 
 ## License
