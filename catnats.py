@@ -73,11 +73,11 @@ def has_ping_in(data):
     # There can be more than one PING msg, or there can be none
     # (e.g., if a MSG contains PING\r\n in its payload)
     # Sending a single PONG for 0 or many PINGs should be safe.
-    return 'PING\r\n' in data
+    return b'PING\r\n' in data
 
 
 def send_pong(sock):
-    sock.send('PONG\r\n')
+    sock.send(b'PONG\r\n')
 
 
 def can_upgrade_ssl(data):
