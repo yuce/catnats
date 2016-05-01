@@ -168,6 +168,9 @@ def main():
     except socket.error as e:
         print(e, file=sys.stderr)
         sys.exit(2)
+        
+    if args.raw:
+        sys.stdin = os.fdopen(sys.stdin.fileno(), 'rb', 0)        
 
     # gnatsd sends the INFO message on connect.
     # parse it and upgrade the socket to SSL if necessary
