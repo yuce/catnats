@@ -5,7 +5,11 @@
 
 ## NEWS
 
-* **2015-03-29**: Version 0.1.1:
+* **2016-06-19**: Version 0.1.2:
+
+  * Bug fixes.
+
+* **2016-03-29**: Version 0.1.1:
 
   * Added `--raw` option.
 
