@@ -43,17 +43,14 @@ import json
 import argparse
 
 
-VERSION = '0.1.0'
+VERSION = '0.1.2'
 DEFAULT_PORT = 4222
-
 
 """
 nats 127.0.0.1:4222 CONNECT --user user --pass 123 PUB loadavg.$(hostname) -p "$(cat /proc/loadavg)"
 vs
 payload=`cat /proc/loadavg` && printf "PUB loadavg.$(hostname) ${#payload}\r\n${payload}\r\n" | nats -q --user demo --pass 123 --addr 127.0.0.1:4222 
 """
-
-
 
 def connect(host, port):
     sock = socket.socket(socket.AF_INET,
@@ -203,7 +200,9 @@ def main():
             else:
                 line = sys.stdin.readline().rstrip('\r\n').encode('utf-8')
             if not line:
-                if not args.no_exit:
+                if args.no_exit:
+                    time.sleep(1)
+                else:
                     break
             else:
                 sock.send(line if args.raw else line + b'\r\n')
