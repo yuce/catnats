@@ -81,7 +81,7 @@ def can_upgrade_ssl(data):
     nl = data.index(b'\r\n')
     if nl > 0:
         server_info = parse_info(data[:nl].decode('ascii'))
-        return server_info['tls_required']
+        return server_info.get('tls_required', False)
     return False
 
 
