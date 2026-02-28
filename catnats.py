@@ -190,7 +190,7 @@ def main():
     t = threading.Thread(target=receiver,
                          args=(sock,),
                          kwargs=dict(auto_pong=args.pong, quiet=args.quiet))
-    t.setDaemon(True)
+    t.daemon = True
     t.start()
 
     try:
